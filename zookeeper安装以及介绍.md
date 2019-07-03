@@ -134,6 +134,10 @@ zookeeper实际上是yahoo开发的，用于分布式中一致性处理的框架
 
 docker镜像安装参考:https://segmentfault.com/a/1190000006907443
 
+#### zookeeper集群安装
+
+zookeeper集群安装参见:https://segmentfault.com/a/1190000010807875
+
 #### zookeeper配置文件描述
 
 * tickTime
@@ -168,13 +172,27 @@ docker镜像安装参考:https://segmentfault.com/a/1190000006907443
 
 * contrib
 
-* 
+  > 附加的一些功能
 
-* 
+* dist-maven
 
+  > mvn 编译后的目录,pom文件,jar包等
 
+* docs
 
+  > 存放文档的地方,index.html,或者 index.pdf
 
+* lib
+
+  > 需要依赖的 jar包
+
+* recipes
+
+  > 存放一些案例
+
+* src
+
+  > 存放源码的地方
 
 
 
