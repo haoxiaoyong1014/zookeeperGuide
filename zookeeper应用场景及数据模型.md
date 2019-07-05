@@ -30,5 +30,17 @@
 
   > acl:权限控制列表，后续会讲到；
 
+#### zookeeper应用场景
+
+* Master选举
+
+  > 在分布式系统中，Master往往用来协调集群中其他系统单元，具有对分布式系统状态变更的决定权，如在读写分离的应用场景中，客户端的写请求往往是由Master来处理，或者其常常处理一些复杂的逻辑并将处理结果同步给其他系统单元。利用Zookeeper的强一致性，能够很好地保证在分布式高并发情况下节点的创建一定能够保证全局唯一性，即Zookeeper将会保证客户端无法重复创建一个已经存在的数据节点。
+  >
+  > 　　首先创建/master_election/2019-07-05节点，客户端集群每天会定时往该节点下创建临时节点，如/master_election/2019-07-05/binding，这个过程中，只有一个客户端能够成功创建，此时其变成master，其他节点都会在节点/master_election/2019-07-05上注册一个子节点变更的Watcher，用于监控当前的Master机器是否存活，一旦发现当前Master挂了，其余客户端将会重新进行Master选举。
+  >
+  > 这也就是所谓的首脑模式，从而保证我们的集群是高可用的；
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-16cd945fc69b1932.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 https://www.jianshu.com/p/2e970fe35c3f>
 
