@@ -80,7 +80,7 @@
   >
   > 之前在ZNode介绍时提过，创建节点时可以设定为SEQUENTIAL顺序节点，创建后API会返回这个节点的完整名字，利用这个特性我们就可以来生成全局唯一ID了。
 
-![image.png](https://upload-images.jianshu.io/upload_images/15181329-b155f0f38906c371.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-83b7696cd4455a56.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 所有客户端根据自己的任务类型，在指定类型的任务下创建一个顺序节点，例如“Job-”节点
 
@@ -92,7 +92,23 @@
 
 * 分布式锁
 
-  
+  > 分布式锁用于控制分布式系统之间同步访问共享资源的一种方式，可以保证不同系统访问一个或一组资源时的一致性，主要分为排它锁和共享锁。
+  >
+  > **排它锁又称为写锁或独占锁**，若事务T1对数据对象O1加上了排它锁，那么在整个加锁期间，只允许事务T1对O1进行读取和更新操作，其他任何事务都不能再对这个数据对象进行任何类型的操作，直到T1释放了排它锁。
+
+> 如果不同系统或同一系统不同机器之间共享了同一资源，那访问这些资源时通常需要一些互斥手段来保证一致性，这种情况下就需要用到分布式锁了。
+>
+> 使用关系型数据库是一种简单、广泛的实现方案，但大多数大型分布式系统中数据库已经是性能瓶颈了，如果再给数据库添加额外的锁会更加不堪重负；另外，使用数据库做分布式锁，当抢到锁的机器挂掉的话如何释放锁也是个头疼的问题。
+>
+> 接下来看下使用ZK如何实现排他锁。排他锁的核心是如何保证当前有且只有一个事务获得锁，并且锁被释放后所有等待获取锁的事务能够被通知到。
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-d7eb82b33cc99a17.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+**获取锁**，在需要获取排它锁时，所有客户端通过调用接口，在/exclusive_lock节点下创建临时子节点/exclusive_lock/lock。Zookeeper可以保证只有一个客户端能够创建成功，没有成功的客户端需要注册/exclusive_lock节点监听。
+
+ **释放锁**，当获取锁的客户端宕机或者正常完成业务逻辑都会导致临时节点的删除，此时，所有在/exclusive_lock节点上注册监听的客户端都会收到通知，可以重新发起分布式锁获取。
+
+
 
 https://www.jianshu.com/p/2e970fe35c3f>
 
