@@ -79,3 +79,10 @@
 
 #### zk常用命令行操作2
 
+* create命令
+
+  > create [-s] [-e] path data acl  
+
+  键入: create /myzk myzk-data
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-10c9e37725fce7a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
