@@ -64,6 +64,8 @@
 
 `aclVersion`:权限版本,如果权限发生变化会累加1
 
+`ephemeralOwner`:临时节点和持久节点之间的区别
+
 `dataLength`:数据长度
 
 `numChildren`:子节点数量
@@ -82,7 +84,41 @@
 * create命令
 
   > create [-s] [-e] path data acl  
+  >
+  > -s: 创建顺序节点
+  >
+  > -e: 创建临时节点
+  >
+  > path: 在哪里创建
+  >
+  > data: 给这个创建的节点添加的数据
+  >
+  > acl: 创建节点的权限
 
-  键入: create /myzk myzk-data
+  键入: `create /myzk myzk-data`
 
-  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-10c9e37725fce7a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-9db475bb5de0c6d1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+可以看到`cversion`和`dataVersion`都是 0;
+
+**创建一个临时节点:**
+
+键入:`create -e /myzk/tmp myzk-data`
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-302d67cc18acf419.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+子节点的版本号由 0 变为 1;
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-3aa4258b36a8ab81.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+这个 tmp目录是之前我们创建的临时节点,可以看到`ephemeralOwner`这个的值是`0x100019e2b730001`而不是持久节点的`0x0`,这就是持久节点和临时节点的区别;
+
+删除临时节点: `ctrl+c`断开连接;,再次进入,再次查看`ls /myzk`可能还会有,因为是有心跳检测的(时间差),等待一会再次查看tmp节点就会消失;
+
+**创建顺序节点:**
+
+键入: `create -s /myzk/sec seq`
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-5240a6af1d4c5c77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+逐渐累加的;sec0000000001,sec0000000002,sec0000000003 …...这就是创建了临时节点
