@@ -121,4 +121,30 @@
 
 ![image.png](https://upload-images.jianshu.io/upload_images/15181329-5240a6af1d4c5c77.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-逐渐累加的;sec0000000001,sec0000000002,sec0000000003 …...这就是创建了临时节点
+逐渐累加的;sec0000000001,sec0000000002,sec0000000003 …...这就是创建了临时节点;
+
+* set命令
+
+  > set path data [version]
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-72bd7358afe7c584.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+先看下 myzk 节点下数据的值为 myzk-data,dataversion的是 0;cversion是 4,因为上面我们创建了1 个临时节点和3 个顺序节点;
+
+键入: `set /myzk new-data` 然后我在 `get /myzk`
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-5011a96c165003ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+可以看到当前节点的数据更新为 new-data ; dataVersion 的值为 1(乐观锁);
+
+在高并发的情况下,有很多的人对这个节点进行设置(也就是 set),例如:`set /myzk 123`,在大并发的情况下这个值(dataVersion)一直是累加的,然后直接的覆盖原来的值;如果按照顺序来设置的话就要在后面加上一个版本号`set /myzk 123 1`
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-cbd5b71f6dee7d42.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+现在 dataVersion的值变为了 2;如果说我旁边还有别的用户也进行了这种操作,他获取的时候版本号也是之前没有修改的版本号也是 1;那么现在他的实际版号已经由 1 变成了 2;那么这个用户继续操作的话就会报一个错;
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-1702a64dafcf3c7a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+`version No is not valid : /myzk` 
+
+我们必须使用最新的版本号才能进行更新,这也是乐观锁最常用的一种方式;
