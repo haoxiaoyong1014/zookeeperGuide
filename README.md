@@ -2,3 +2,5 @@
 
 2019-07-06更新：[zookeeper应用场景及数据模型](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zookeeper应用场景及数据模型.md)
 
+2019-07-08 更新:[Zookeeper客户端命令行学习]()
+
