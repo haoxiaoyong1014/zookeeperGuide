@@ -148,3 +148,34 @@
 `version No is not valid : /myzk` 
 
 我们必须使用最新的版本号才能进行更新,这也是乐观锁最常用的一种方式;
+
+* delete命令
+
+  > delete path [version] 
+
+首先查看一下 myzk节点下有多少子节点
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-920deff9dcd6932f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+可以看到有:[sec0000000003, tmp, sec0000000001, sec0000000002]
+
+那我们下面来删除一个:
+
+键入: `delete /myzk/sec0000000001`
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-cf923c32be2e354a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+这样就被删除掉了,也就是说我们不指定节点的话是可以直接删除掉的;
+
+那下面我们指定一个节点版本号进行删除:我们先把sec0000000002的版本号更新一下
+
+首先键入: `set /myzk/sec0000000002 123`这时 `get //myzk/sec0000000002`可以看到 dataVersion 的由 0 变为了 1;
+
+如果我们还是按老的版本号进行删除也是会报`version No is not valid : /myzk/sec0000000002` 
+
+例如: `delete /myzk/sec0000000002 0`;因为这时的版本号已经更新为 1 了;
+
+所以我们键入:`delete /myzk/sec0000000002 1`
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-b5d2ba98069f4db8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
