@@ -179,3 +179,50 @@
 
 ![image.png](https://upload-images.jianshu.io/upload_images/15181329-b5d2ba98069f4db8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+#### zk特性 watcher机制
+
+* 针对每个节点的操作,都会有一个监督者 watcher,也可以理解为一个触发器,当我们的节点发生变化的时候,例如创建,删除,修改等..都会触发 watcher事件(包括父节点,子节点)
+
+* zk中的 watcher是一次性的,触发后立即销毁;
+* 针对不同类型的操作,触发的 watcher 事件也不同;
+  * (子)节点创建事件
+  * (子)节点删除事件
+  * (子)节点数据变化事件
+
+#### watcher命令行
+
+* 通过 get path [watch]设置 watcher
+
+  > 这只是其中一种,后面会讲到其他的设置 watcher事件的方式
+
+**watcher事件类型**
+
+* 创建父节点触发: NodeCreated
+
+我们将之前创建的/myzk 节点删除掉;演示:
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-370aac44edac2056.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+这里就触发了一个NodeCreated事件;
+
+* 修改父节点数据触发: NodeDataChanged
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-85038c377957ea3d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+这一次给节点去设置值是没有触发 watcher事件的,因为上一次设置的事件是一次性的;所以这次需要重新设置 watcher事件;我们用另一种方式去设置watcher事件
+
+键入:`get /myzk watch`
+
+再次去设置节点值的时候就会触发 watcher事件;而且类型是NodeDataChanged
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-e8582c15b8326e64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+* 删除父节点触发:NodeDeleted
+
+我们跟上面一样还是要先设置节点事件,
+
+键入: `get /myzk watch`
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-da0f43956c097c4b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+我们上面演示的所有都是根据父节点来增删改的;下面我们看看子节点的 watcher事件
