@@ -255,3 +255,10 @@
 
 这就是修改(set)和创建(create),删除(delete)的不同之处;在修改子节点想触发 watch 事件必须要按照父节点的方式进行;
 
+#### watcher使用场景
+
+* 统一资源配置
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-7ba48067e33aa3c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+当主机更新节点为新的配置信息时会触发 watcher 事件,客户端 1, 客户端 2, 客户端 3会监听 watcher事件,并更新配置;
