@@ -226,3 +226,32 @@
 ![image.png](https://upload-images.jianshu.io/upload_images/15181329-da0f43956c097c4b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 我们上面演示的所有都是根据父节点来增删改的;下面我们看看子节点的 watcher事件
+
+* ls为父节点设置 watcher,创建子节点触发 NodeChildrenChanged
+
+键入: `ls /myzk watch`
+
+然后再/myzk节点下创建子节点,`create /myzk/abc 88`
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-38e75ff9f218e8da.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+* ls为父节点设置 watcher,删除子节点触发 NodeChildrenChanged
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-1daa6942f1531d1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+这里说一下为什么删除和创建都是触发NodeChildrenChanged,因为他们是子节点,子节点和父节点要区分开来,
+
+父节点删除和新增的话对应的是 delete 和 create;对于父节点来说我不需要去关注额外的东西,子节点我不管你是去创建还是删除对于我父节点来说我只需要给我的客户端响应一个NodeChildrenChanged事件,至于发生什么事件我不需要过问太多;
+
+* ls为父节点设置 watcher,修改子节点不触发事件
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-5822adf7b403deb9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+在这里并没有触发 watch事件;这也是 zk的一个机制;在设置值得时候要把子节点当做父节点来对待,设置方式:
+
+`get /myzk/xyz watch` ,然后 `set /myzk/xyz/ 8080`
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-1df1d4b4140e839b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+这就是修改(set)和创建(create),删除(delete)的不同之处;在修改子节点想触发 watch 事件必须要按照父节点的方式进行;
+
