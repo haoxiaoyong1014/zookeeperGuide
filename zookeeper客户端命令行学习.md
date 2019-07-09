@@ -262,3 +262,45 @@
   ![image.png](https://upload-images.jianshu.io/upload_images/15181329-7ba48067e33aa3c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 当主机更新节点为新的配置信息时会触发 watcher 事件,客户端 1, 客户端 2, 客户端 3会监听 watcher事件,并更新配置;
+
+#### ACL(access control lists)权限控制
+
+* 针对节点可以设置相关的读写等权限,目的为了保障数据安全性
+* 权限 permissions可以指定不同的权限范围以及角色(跟 shiro很相似)
+
+**ACL命令行**
+
+* getAcl:获取某个节点的 acl权限信息
+
+  > `getAcl path` 
+
+  键入: `getAcl /myzk/abc`
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-a87c7eb332a82029.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+* setAcl:设置某个节点的 acl权限信息
+
+* addauth: 输入认证授权信息,注册时输入明文密码(登录)但是在 zk的系统里,密码是以加密的形式存在的; 
+
+**ACL 的构成**
+
+* zk的 acl 通过[scheme:id :permissions]来构成权限列表
+
+  > Scheme:代表采用某种权限机制
+  >
+  > id:代表允许访问的用户
+  >
+  > Permissions:权限组合字符串
+
+**Scheme**
+
+* world: world下只有一个 id,即只有一个用户,也就是 anyone,那么组合的写法就是 world:anyone:[permissions]
+
+* auth:代表认证登录,需要注册用户有权限就可以,形式为 auth:user:password:[permissions]
+
+* digest:需要对密码加密才能访问,组合形式为 digest:username:BASE64(SHA1(password)):[permissions]
+
+  > auth和 digest的区别之处是:auth 的登录密码可以使明文,而 digest密码是要加过密的;后续例子中演示
+
+* ip:当设置为 ip 指定的 ip地址,此时限制 ip进行访问,比如 ip:192.168.1.1:[permissions]
+* super: 代表超级管理员,拥有所有的权限
