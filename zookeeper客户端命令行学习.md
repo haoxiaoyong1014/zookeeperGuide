@@ -319,3 +319,20 @@
 * ADMIN: 设置权限；
 
 #### ACL命令行学习
+
+* world:anyone :crdwa
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-df1385f070eea696.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+创建时会有一个默认权限，所有的匿名用户都可以对这个节点进行操作，拥有所有权限
+
+下面设置一下权限：
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-ca4eeac01ce5da43.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+crwa: 创建/读/写/admin(设置权限),这里是没有删除的权限；注意删除是指删除子节点的权限，my_zk是所有权限都有，多以这里abc节点是可以删除的；这里是指abc节点只有crwa权限；下面演示一下：
+
+![image.png](https://upload-images.jianshu.io/upload_images/15181329-5c1d2b9e9c93d112.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+这里没有权限删除节点`/my_zk/abc/xyz`;因为这个abc节点是有admin权限的，所以我们可以重新可以设置权限的；
+
