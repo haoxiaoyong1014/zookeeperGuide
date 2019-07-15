@@ -336,3 +336,36 @@ crwa: 创建/读/写/admin(设置权限),这里是没有删除的权限；注意
 
 这里没有权限删除节点`/my_zk/abc/xyz`;因为这个abc节点是有admin权限的，所以我们可以重新可以设置权限的；
 
+* auth:user:pwd:cdrwa
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-42b21beabc4dd6f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+  跟节点下有`dubbo, zookeeper, test, testnode, myzk`,myzk节点下有 abc节点;
+
+  abc有默认的 cdrwa权限;下面我们使用 auth方式给 abc节点设置权限;
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-22bb3ff7cdcc4236.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+  `setAcl /myzk/abc auth:haoxy:haoxy:cdrwa` 其中 haoxy:haoxy表示用户名和密码
+
+  `Acl is not valid : /myzk/abc`:这句话的意思是我们现在还没有注册;
+
+  通过`addauth digest haoxy:haoxy`来进行注册;
+
+  然后我们再去设置权限
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-80eb9ed9b30f9ea2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+  使用`getAcl /myzk/abc`查看:如下
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-5a29a61bc81dd913.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+  其中 `haoxy`表示用户名,`Sm6Y7C7Lz+Zw3Dg5QPqU15Vy1Vg=`表示加密后(SHA1和 BASE64)的密码(先保存一下后面会用到)
+
+  第一次注册和登录之后,后面就可以省略不写了,例如`setAcl /myzk/abc auth::cdrwa`因为他是跟着第一登录注册的时候来的;
+
+* digest:user:BASE64(SHA1(pwd)):cdrwa
+
+* Addauth digest user:pwd
+
+  
