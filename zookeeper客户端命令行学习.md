@@ -362,10 +362,36 @@ crwa: 创建/读/写/admin(设置权限),这里是没有删除的权限；注意
 
   其中 `haoxy`表示用户名,`Sm6Y7C7Lz+Zw3Dg5QPqU15Vy1Vg=`表示加密后(SHA1和 BASE64)的密码(先保存一下后面会用到)
 
-  第一次注册和登录之后,后面就可以省略不写了,例如`setAcl /myzk/abc auth::cdrwa`因为他是跟着第一登录注册的时候来的;
+  第一次注册和登录之后,后面就可以省略不写了,例如`setAcl /myzk/abc auth::cdrwa`因为他是跟着第一登录注册的时候来的;退出 ctrl+c,之前的用户就会自动的退出;
 
 * digest:user:BASE64(SHA1(pwd)):cdrwa
 
-* Addauth digest user:pwd
+  退出当前用户;这里我们重新创建一个节点`test`
 
-  
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-f905b0eba66d0d45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+  键入:`setAcl /myzk/test digest:haoxy:Sm6Y7C7Lz+Zw3Dg5QPqU15Vy1Vg=:cdra`
+
+  `haoxy`:用户名,`Sm6Y7C7Lz+Zw3Dg5QPqU15Vy1Vg=` 加密后的密码
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-21893ce23a92ca8d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+  这个时候我们键入:` get /myzk/test`是会提示:`Authentication is not valid : /myzk/test`权限不足
+
+  所以我们还是需要通过:`addauth digest haoxy:haoxy`登录;上一步 setAcl可以说是注册;
+
+  注意这里是通过明文,我们不可能让用户通过密码登录,再次 `get /myzk/test`就可以正常显示数据
+
+  上面我们给写权限,下面我们测试一下写权限是否能写:
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-63b0aadbfaba6a07.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+  正式如我所愿,是没有写权限的;
+
+  ![image.png](https://upload-images.jianshu.io/upload_images/15181329-3b199669f57fb025.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+  这里 delete 是有权限的,这也是正如我们所愿;
+
+* addauth digest user:pwd
+
+  >上面我们也介绍了addauth,语法: addauth digest haoxy:haoxy
