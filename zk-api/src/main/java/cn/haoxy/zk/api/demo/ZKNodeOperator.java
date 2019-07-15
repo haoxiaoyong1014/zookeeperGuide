@@ -59,8 +59,14 @@ public class ZKNodeOperator implements Watcher {
          * 			 		EPHEMERAL_SEQUENTIAL：临时顺序节点
          */
         try {
-            result = zooKeeper.create(path, data, acls, CreateMode.EPHEMERAL);
-            System.out.println("创建节点：\t" + result + "\t成功...");
+            //方式一:同步
+            //result = zooKeeper.create(path, data, acls, CreateMode.EPHEMERAL);
+
+            //方式二: 异步创建节点
+            String ctx ="{'create':'success'}";
+            zooKeeper.create(path,data,acls,CreateMode.PERSISTENT,new CreateCallBack(),ctx);
+
+            //System.out.println("创建节点：\t" + result + "\t成功...");
             TimeUnit.SECONDS.sleep(2);
 
         } catch (Exception e) {
