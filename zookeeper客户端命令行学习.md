@@ -401,5 +401,6 @@ crwa: 创建/读/写/admin(设置权限),这里是没有删除的权限；注意
 * zk可以通过它自身提供的简写命令与服务器进行交互
 * 需要用到nc 命令，安装：yum install nc
 * echo [commond] | nc [ip] [port]
+* stat is not executed because it is not in the whitelist.
 
 * 4lw.commands.whitelist=*
