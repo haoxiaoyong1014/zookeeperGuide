@@ -14,4 +14,4 @@ Apache Curator客户端的使用
 
 Dubbo入门到重构服务
 
-分布式锁
+zookeeper实现分布式锁
