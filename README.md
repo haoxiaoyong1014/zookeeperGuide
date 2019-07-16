@@ -1,4 +1,4 @@
- [理解分布式系统](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/理解分布式系统.md);
+ [理解分布式系统](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/理解分布式系统.md)
 
 [zookeeper安装以及介绍](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zookeeper安装以及介绍.md)
 
@@ -15,3 +15,5 @@ Apache Curator客户端的使用
 Dubbo入门到重构服务
 
 zookeeper实现分布式锁
+
+zookeeper集群实现Master选举
