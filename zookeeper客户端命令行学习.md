@@ -404,3 +404,5 @@ crwa: 创建/读/写/admin(设置权限),这里是没有删除的权限；注意
 * stat is not executed because it is not in the whitelist.
 
 * 4lw.commands.whitelist=*
+
+<https://blog.csdn.net/u013673976/article/details/47279707>
