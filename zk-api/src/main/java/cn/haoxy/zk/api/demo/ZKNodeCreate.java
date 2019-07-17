@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * github:https://github.com/haoxiaoyong1014
  * 创建zk节点
  */
-public class ZKNodeOperator implements Watcher {
+public class ZKNodeCreate implements Watcher {
 
     private ZooKeeper zooKeeper = null;
 
@@ -22,12 +22,12 @@ public class ZKNodeOperator implements Watcher {
 
     public static final Integer timeout = 5000;
 
-    public ZKNodeOperator() {
+    public ZKNodeCreate() {
     }
 
-    public ZKNodeOperator(String connectString) {
+    public ZKNodeCreate(String connectString) {
         try {
-            zooKeeper = new ZooKeeper(zkServerPath, timeout, new ZKNodeOperator());
+            zooKeeper = new ZooKeeper(zkServerPath, timeout, new ZKNodeCreate());
         } catch (IOException e) {
             e.printStackTrace();
             if (zooKeeper != null) {
@@ -42,7 +42,7 @@ public class ZKNodeOperator implements Watcher {
     }
 
     //创建zk节点
-    public void createZKNode(String path, byte[] data, List<ACL> acls){
+    public void createZKNode(String path, byte[] data, List<ACL> acls) {
         String result = "";
         /**
          * 同步或者异步创建节点,都不支持子节点的递归创建,异步有一个 callback 函数
@@ -63,8 +63,8 @@ public class ZKNodeOperator implements Watcher {
             //result = zooKeeper.create(path, data, acls, CreateMode.EPHEMERAL);
 
             //方式二: 异步创建节点
-            String ctx ="{'create':'success'}";
-            zooKeeper.create(path,data,acls,CreateMode.PERSISTENT,new CreateCallBack(),ctx);
+            String ctx = "{'create':'success'}";
+            zooKeeper.create(path, data, acls, CreateMode.PERSISTENT, new CreateCallBack(), ctx);
 
             //System.out.println("创建节点：\t" + result + "\t成功...");
             TimeUnit.SECONDS.sleep(2);
@@ -75,9 +75,10 @@ public class ZKNodeOperator implements Watcher {
     }
 
     public static void main(String[] args) {
-       ZKNodeOperator zkServer =new ZKNodeOperator(zkServerPath);
+        ZKNodeCreate zkServer = new ZKNodeCreate(zkServerPath);
         zkServer.createZKNode("/testnode", "testnode".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE);
     }
+
     public void process(WatchedEvent watchedEvent) {
 
     }
