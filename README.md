@@ -8,7 +8,7 @@
 
 [Zookeeper客户端命令行学习](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zookeeper客户端命令行学习.md)
 
-[使用ZooKeeper原生Java API进行客户端开发](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/使用ZooKeeper原生Java API进行客户端开发.md)
+[使用ZooKeeper原生JavaAPI进行客户端开发](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/使用ZooKeeper原生JavaAPI进行客户端开发.md)
 
 计划:
 
