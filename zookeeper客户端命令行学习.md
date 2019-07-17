@@ -399,10 +399,68 @@ crwa: 创建/读/写/admin(设置权限),这里是没有删除的权限；注意
 #### zk四字命令
 
 * zk可以通过它自身提供的简写命令与服务器进行交互
+
 * 需要用到nc 命令，安装：yum install nc
-* echo [commond] | nc [ip] [port]
-* stat is not executed because it is not in the whitelist.
 
-* 4lw.commands.whitelist=*
+* 语法: echo [commond] | nc [ip] [port]
 
-<https://blog.csdn.net/u013673976/article/details/47279707>
+  | 命令 | 示例                           | 描述                                                         |
+  | ---- | ------------------------------ | ------------------------------------------------------------ |
+  | conf | echo conf \| nc localhost 2181 | 输出相关服务配置的详细信息。比如端口、zk数据及日志配置路径、最大连接数，session超时时间、serverId等 |
+  | cons | echo cons \| nc localhost 2181 | 列出所有连接到这台服务器的客户端连接/会话的详细信息 包括“接受/发送”的包数量、session id 、操作延迟、最后的操作执行等信息 |
+  | crst | Echo crst \| nc localhost 2181 | 重置当前这台服务器所有连接/会话的统计信息                    |
+  | dump | echo dump \| localhost 2181    | 列出未经处理的会话和临时节点（只在leader上有效）             |
+  | envi | echo dump \| localhost 2181    | 输出关于服务器的环境详细信息（不同于conf命令），比如host.name、java.version、java.home、user.dir=/data/zookeeper-3.4.6/bin之类信息 |
+  | ruok | echo ruok \| localhost 2181    | 测试服务是否处于正确运行状态。如果正常返回"imok"，否则返回空。 |
+  | srst | echo srst \| localhost 2181    | 重置服务器的统计信息                                         |
+  | srvr | echo srvr \| localhost 2181    | 输出服务器的详细信息。zk版本、接收/发送包数量、连接数、模式（leader/follower）、节点总数。 |
+  | stat | echo stat \| localhost 2181    | 输出服务器的详细信息：接收/发送包数量、连接数、模式（leader/follower）、节点总数、延迟。 所有客户端的列表。 |
+  | wchs | echo wchs \| localhost 2181    | 列出服务器watches的简洁信息：连接总数、watching节点总数和watches总数 |
+  | wchc | echo wchc \| localhost 2181    | 通过session分组，列出watch的所有节点，它的输出是一个与 watch 相关的会话的节点列表。如果watches数量很大的话，将会产生很大的开销，会影响性能，小心使用。 |
+  | wchp | echo wchp \| nc localhost 2181 | 通过路径分组，列出所有的 watch 的session id信息。它输出一个与 session 相关的路径。如果watches数量很大的话，将会产生很大的开销，会影响性能，小心使用。 |
+  | mntr | echo mntr \| nc localhost 2181 | 列出集群的健康状态。包括“接受/发送”的包数量、操作延迟、当前服务模式（leader/follower）、节点总数、watch总数、临时节点总数。 |
+
+如果你在输入四字命令时出现以下提示:
+
+`stat is not executed because it is not in the whitelist.`
+
+在 zoo.cfg配置文件中加入`4lw.commands.whitelist=*`,这句话就是将四字命令加入到白名单中
+
+例如我的配置:
+
+```xml
+tickTime = 2000
+dataDir =  /data
+dataLogDir = /datalog
+tickTime = 6000
+clientPort = 2181
+initLimit = 5
+syncLimit = 2
+4lw.commands.whitelist=*
+```
+
+#### 解决使用 docker安装 zookeeper 时的四字命令问题
+
+但是如果你是使用 docker 镜像安装的 zookeeper,你进入容器到 conf文件夹下是找不到 zoo.cfg文件的;
+
+那么咱们就要使用映射的方式:
+
+创建配置文件 zoo.cfg,将上面的内容拷贝到 zoo.cfg中,编写 docker-compose,配置volumes ,内容如下:
+
+```yml
+version: '2'
+services:
+  zookeeper:
+    image: zookeeper
+    restart: always
+    container_name: zookeeper
+    volumes:
+      - ./config:/conf
+    ports: 
+      - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+```
+
+将之前的容器,镜像删除,重新运行 docker-compose up -d 命令,在次使用四字命令即 OK
+
