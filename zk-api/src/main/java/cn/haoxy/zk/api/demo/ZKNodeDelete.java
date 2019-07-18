@@ -59,7 +59,11 @@ public class ZKNodeDelete implements Watcher {
         //删除节点和创建修改一样都是有两个方法;
         //方式一: 同步
         //注意:你要是在这里 debug 看是否创建节点时候,注意超时时间;不然会报: KeeperErrorCode = ConnectionLoss for xxx;这个异常
-        zkServer.getZooKeeper().delete("/test-delete-node", 0);
+        // zkServer.getZooKeeper().delete("/test-delete-node", 0);
+        //方式二:异步方式
+        Object ctx = "{delete:success}";
+        zkServer.getZooKeeper().delete("/test-delete-node", 0, new DeleteCallBack(),ctx);
+
     }
 
     public void process(WatchedEvent watchedEvent) {
