@@ -10,7 +10,7 @@
 
 * [同步异步删除zk节点](<https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zk-api/src/main/java/cn/haoxy/zk/api/demo/ZKNodeDelete.java>)
 
-* [CountDownLatch的介绍]((https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zk-api/CountDownLatch介绍.md))
+* [CountDownLatch的介绍](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zk-api/CountDownLatch介绍.md)
 
 * [CountDownLatch的使用](https://github.com/haoxiaoyong1014/zookeeperGuide/tree/master/zk-api/src/main/java/cn/haoxy/zk/api/countdown)
 
