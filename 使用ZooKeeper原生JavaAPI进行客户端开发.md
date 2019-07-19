@@ -18,12 +18,12 @@
 
 * [获取zk子节点列表](<https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zk-api/src/main/java/cn/haoxy/zk/api/demo/ZKGetChildrenList.java>)
 
-* 判断zk节点是否存在
+* [判断zk节点是否存在](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zk-api/src/main/java/cn/haoxy/zk/api/demo/ZKNodeExist.java)
 
-* acl - 默认匿名权限
+* [acl - 默认匿名权限](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zk-api/src/main/java/cn/haoxy/zk/api/demo/ZKNodeAclAnyone.java)
 
-* acl -自定义用户权限
+* [acl -自定义用户权限](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zk-api/src/main/java/cn/haoxy/zk/api/demo/ZKNodeAclDigest.java)
 
-* acl - ip权限
+* [acl - ip权限](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zk-api/src/main/java/cn/haoxy/zk/api/demo/ZKNodeAclIp.java)
 
   

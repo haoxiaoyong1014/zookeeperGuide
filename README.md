@@ -10,12 +10,13 @@
 
 [使用ZooKeeper原生JavaAPI进行客户端开发](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/使用ZooKeeper原生JavaAPI进行客户端开发.md)
 
-计划:
+[ApacheCurator客户端的使用](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/ApacheCurator客户端的使用.md)
 
-Apache Curator客户端的使用
+计划:
 
 Dubbo入门到重构服务
 
 zookeeper实现分布式锁
 
 zookeeper集群实现Master选举
+
