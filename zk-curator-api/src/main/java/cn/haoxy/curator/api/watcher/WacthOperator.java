@@ -17,7 +17,7 @@ import static org.apache.curator.framework.imps.CuratorFrameworkState.STARTED;
  * Created in 2019-07-19.
  * E-mail:hxyHelloWorld@163.com
  * github:https://github.com/haoxiaoyong1014
- * 删除zk节点
+ * wacth 事件监听
  */
 public class WacthOperator {
 
