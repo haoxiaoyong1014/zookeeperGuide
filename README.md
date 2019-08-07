@@ -12,7 +12,7 @@
 
 [ApacheCurator客户端的使用](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/ApacheCurator客户端的使用.md)
 
-[Dubbo入门到重构服务](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/Dubbo入门到重构服务.md)
+[Dubbo入门到重构服务](https://github.com/haoxiaoyong1014/microserver-dubbo-learning)
 
 计划:
 
