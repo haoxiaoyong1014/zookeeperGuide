@@ -2,7 +2,6 @@ package cn.haoxy.lock.javalock;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by haoxiaoyong on 2019/8/14 下午 9:55
