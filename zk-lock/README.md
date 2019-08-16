@@ -155,6 +155,7 @@ public class OrderService implements Runnable {
 同时我们要注意main方法中的OrderService对象；这里只实例化一次；
 
 ![image.png](https://upload-images.jianshu.io/upload_images/15181329-88d07d8d22a96461.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 很完美的打印到100;
 
 #### 下面介绍在分布式环境下生成订单ID;
