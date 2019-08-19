@@ -14,9 +14,9 @@
 
 [Dubbo入门到重构服务](https://github.com/haoxiaoyong1014/microserver-dubbo-learning)
 
-计划:
+[zookeeper实现分布式锁](https://github.com/haoxiaoyong1014/zookeeperGuide/blob/master/zookeeper实现分布式锁.md)
 
-zookeeper实现分布式锁
+计划:
 
 zookeeper集群实现Master选举
 
