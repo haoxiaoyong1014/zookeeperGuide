@@ -1,5 +1,7 @@
 package cn.haoxy.lock.zklock;
 
+import org.I0Itec.zkclient.IZkDataListener;
+
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -25,7 +27,6 @@ public class ZookeeperDistrbuteLock extends ZookeeperAbstractLock {
 
     void waitLock() {
         IZkDataListener izkDataListener = new IZkDataListener() {
-
             public void handleDataDeleted(String path) throws Exception {
                 // 唤醒被等待的线程
                 if (countDownLatch != null) {

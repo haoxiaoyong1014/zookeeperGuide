@@ -1,7 +1,5 @@
 package cn.haoxy.lock.zklock;
 
-import cn.haoxy.lock.javalock.OrderNumGenerator;
-
 /**
  * Created by haoxiaoyong on 2019/8/19 下午 10:04
  * e-mail: hxyHelloWorld@163.com

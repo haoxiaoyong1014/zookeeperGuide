@@ -1,5 +1,7 @@
 package cn.haoxy.lock.zklock;
 
+import org.I0Itec.zkclient.ZkClient;
+
 /**
  * Created by haoxiaoyong on 2019/8/19 下午 9:53
  * e-mail: hxyHelloWorld@163.com

@@ -1,6 +1,6 @@
 ### zookeeper实现分布式锁
- 
-#### 什么多线程
+
+##### 什么多线程
 
 多线程为了能够提高应用程序的运行效率，在一个进程中有多条不同的执行路径，同时并行执行，互不影响。
 
@@ -8,7 +8,8 @@
 
 下面我们只针对分布式环境下实现分布式锁介绍;
 
-#### 什么是java内存模型 
+##### 什么是java内存模型 
+
 共享内存模型指的就是Java内存模型(简称JMM)，JMM决定一个线程对共享变量的写入时,能对另一个线程可见。从抽象的角度来看，JMM定义了线程和主内存之间的抽象关系：线程之间的共享变量存储在主内存（main memory）中，每个线程都有一个私有的本地内存（local memory），本地内存中存储了该线程以读/写共享变量的副本。本地内存是JMM的一个抽象概念，并不真实存在。它涵盖了缓存，写缓冲区，寄存器以及其他的硬件和编译器优化
 
 ![image.png](https://upload-images.jianshu.io/upload_images/15181329-7893f8ab9de62c8f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
@@ -184,9 +185,9 @@ public class OrderService implements Runnable {
 添加依赖
 ```xml
 <dependency>
-	<groupId>com.101tec</groupId>
-	<artifactId>zkclient</artifactId>
-	<version>0.10</version>
+   <groupId>com.101tec</groupId>
+   <artifactId>zkclient</artifactId>
+   <version>0.10</version>
 </dependency>
 ```
 
@@ -254,7 +255,7 @@ public class ZookeeperDistrbuteLock extends ZookeeperAbstractLock {
             zkClient.createEphemeral(PATH);
             return true;
         } catch (Exception e) {
-//			e.printStackTrace();
+//       e.printStackTrace();
             return false;
         }
     }
@@ -295,31 +296,31 @@ public class ZookeeperDistrbuteLock extends ZookeeperAbstractLock {
 ```java
 public class OrderService implements Runnable {
     
-	private OrderNumGenerator orderNumGenerator = new OrderNumGenerator();
-	// 使用lock锁
-	// private java.util.concurrent.locks.Lock lock = new ReentrantLock();
-	private Lock lock = new ZookeeperDistrbuteLock();
-	public void run() {
-		getNumber();
-	}
-	public void getNumber() {
-		try {
-			lock.getLock();
-			String number = orderNumGenerator.getNumber();
-			System.out.println(Thread.currentThread().getName() + ",生成订单ID:" + number);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			lock.unLock();
-		}
-	}
-	public static void main(String[] args) {
-		System.out.println("####生成唯一订单号###");
-//		OrderService orderService = new OrderService();
-		for (int i = 0; i < 100; i++) {
-			new Thread( new OrderService()).start();
-		}
-	}
+   private OrderNumGenerator orderNumGenerator = new OrderNumGenerator();
+   // 使用lock锁
+   // private java.util.concurrent.locks.Lock lock = new ReentrantLock();
+   private Lock lock = new ZookeeperDistrbuteLock();
+   public void run() {
+      getNumber();
+   }
+   public void getNumber() {
+      try {
+         lock.getLock();
+         String number = orderNumGenerator.getNumber();
+         System.out.println(Thread.currentThread().getName() + ",生成订单ID:" + number);
+      } catch (Exception e) {
+         e.printStackTrace();
+      } finally {
+         lock.unLock();
+      }
+   }
+   public static void main(String[] args) {
+      System.out.println("####生成唯一订单号###");
+//    OrderService orderService = new OrderService();
+      for (int i = 0; i < 100; i++) {
+         new Thread( new OrderService()).start();
+      }
+   }
 }
 ```
 
@@ -357,5 +358,6 @@ Thread-17,生成订单ID:2019-08-19-22-34-02-9
 Thread-19,生成订单ID:2019-08-19-22-34-11-10
 释放锁资源...
 ##获取lock锁的资源####
-
+·····
 ```
+
