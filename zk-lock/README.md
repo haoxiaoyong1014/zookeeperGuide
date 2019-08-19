@@ -169,3 +169,155 @@ public class OrderService implements Runnable {
 缺点:锁的失效时间难控制、容易产生死锁、非阻塞式、不可重入
 3.使用zookeeper实现分布式锁
 实现相对简单、可靠性强、使用临时节点，失效时间容易控制
+
+#### 什么是分布式锁
+
+分布式锁一般用在分布式系统或者多个应用中，用来控制同一任务是否执行或者任务的执行顺序。在项目中，部署了多个tomcat应用，在执行定时任务时就会遇到同一任务可能执行多次的情况，我们可以借助分布式锁，保证在同一时间只有一个tomcat应用执行了定时任务
+
+#### 使用Zookeeper实现分布式锁
+
+**Zookeeper实现分布式锁原理**
+
+使用zookeeper创建临时序列节点来实现分布式锁，适用于顺序执行的程序，大体思路就是创建临时序列节点，找出最小的序列节点，获取分布式锁，程序执行完成之后此序列节点消失，通过watch来监控节点的变化，从剩下的节点的找到最小的序列节点，获取分布式锁，执行相应处理，依次类推……
+
+添加依赖
+```xml
+<dependency>
+	<groupId>com.101tec</groupId>
+	<artifactId>zkclient</artifactId>
+	<version>0.10</version>
+</dependency>
+```
+
+**创建Lock接口**
+
+```java
+public interface Lock {
+
+    //获取到锁的资源
+    void getLock();
+    // 释放锁
+    void unLock();
+
+}
+```
+
+**创建ZookeeperAbstractLock抽象类**
+
+```java
+public abstract class ZookeeperAbstractLock implements Lock {
+
+    // zk连接地址
+    private static final String CONNECTSTRING = "47.100.102.136:2181";
+
+    // 创建zk连接
+    protected ZkClient zkClient = new ZkClient(CONNECTSTRING);
+
+    protected static final String PATH = "/lock";
+
+    public void getLock(){
+        if(tryLock()){
+            System.out.println("##获取lock锁的资源####");
+        }else {
+            //等待
+            waitLock();
+            //重新获取资源
+            getLock();
+        }
+    }
+
+    //获取锁资源
+    abstract boolean tryLock();
+
+    //等待
+    abstract void waitLock();
+
+    public void unLock() {
+        if (zkClient != null) {
+            zkClient.close();
+            System.out.println("释放锁资源...");
+        }
+    }
+}
+```
+**ZookeeperDistrbuteLock类**
+
+```java
+public class ZookeeperDistrbuteLock extends ZookeeperAbstractLock {
+
+    private CountDownLatch countDownLatch = null;
+
+    boolean tryLock() {
+
+        try {
+            zkClient.createEphemeral(PATH);
+            return true;
+        } catch (Exception e) {
+//			e.printStackTrace();
+            return false;
+        }
+    }
+
+    void waitLock() {
+        IZkDataListener izkDataListener = new IZkDataListener() {
+
+            public void handleDataDeleted(String path) throws Exception {
+                // 唤醒被等待的线程
+                if (countDownLatch != null) {
+                    countDownLatch.countDown();
+                }
+            }
+
+            public void handleDataChange(String path, Object data) throws Exception {
+
+            }
+        };
+        // 注册事件
+        zkClient.subscribeDataChanges(PATH, izkDataListener);
+        if (zkClient.exists(PATH)) {
+            countDownLatch = new CountDownLatch(1);
+            try {
+                countDownLatch.await();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // 删除监听
+        zkClient.unsubscribeDataChanges(PATH, izkDataListener);
+    }
+
+}
+```
+
+**使用Zookeeper锁运行效果**
+
+```java
+public class OrderService implements Runnable {
+    
+	private OrderNumGenerator orderNumGenerator = new OrderNumGenerator();
+	// 使用lock锁
+	// private java.util.concurrent.locks.Lock lock = new ReentrantLock();
+	private Lock lock = new ZookeeperDistrbuteLock();
+	public void run() {
+		getNumber();
+	}
+	public void getNumber() {
+		try {
+			lock.getLock();
+			String number = orderNumGenerator.getNumber();
+			System.out.println(Thread.currentThread().getName() + ",生成订单ID:" + number);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			lock.unLock();
+		}
+	}
+	public static void main(String[] args) {
+		System.out.println("####生成唯一订单号###");
+//		OrderService orderService = new OrderService();
+		for (int i = 0; i < 100; i++) {
+			new Thread( new OrderService()).start();
+		}
+	}
+}
+```
