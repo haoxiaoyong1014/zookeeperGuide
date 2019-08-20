@@ -209,7 +209,7 @@ public interface Lock {
 public abstract class ZookeeperAbstractLock implements Lock {
 
     // zk连接地址
-    private static final String CONNECTSTRING = "47.100.102.136:2181";
+    private static final String CONNECTSTRING = "127.0.0.1:2181";
 
     // 创建zk连接
     protected ZkClient zkClient = new ZkClient(CONNECTSTRING);
