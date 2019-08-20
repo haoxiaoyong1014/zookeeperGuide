@@ -14,7 +14,8 @@
         <dependency>
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
-            <version>0.11</version>
+            <version>0.10</version>
+            <!--<version>0.11</version>-->
         </dependency>
     </dependencies>
 </project>

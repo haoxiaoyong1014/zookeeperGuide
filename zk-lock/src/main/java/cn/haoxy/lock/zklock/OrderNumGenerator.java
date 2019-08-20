@@ -12,7 +12,7 @@ import java.util.Date;
 public class OrderNumGenerator {
 
     //全局订单id;
-    public static int count = 0;
+    private static int count = 0;
 
     public String getNumber() {
 
